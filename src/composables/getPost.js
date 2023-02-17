@@ -1,7 +1,7 @@
 import { ref } from "vue";
 
-const getPosts = () => {
-  const posts = ref([]);
+const getPost = (id) => {
+  const post = ref(null);
   const error = ref(null);
 
   const load = async () => {
@@ -10,17 +10,17 @@ const getPosts = () => {
       await new Promise((resolve) => {
         setTimeout(resolve, 700);
       });
-      let data = await fetch("http://localhost:3000/posts");
+      let data = await fetch("http://localhost:3000/posts/" + id);
       if (!data.ok) {
-        throw Error("no data");
+        throw Error("no post");
       }
-      posts.value = await data.json();
+      post.value = await data.json();
     } catch (error) {
       error.value = error.message;
       console.log(error.value);
     }
   };
-  return { posts, error, load };
+  return { post, error, load };
 };
 
-export default getPosts;
+export default getPost;
